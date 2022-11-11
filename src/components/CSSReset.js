@@ -8,7 +8,7 @@ export const CSSReset = createGlobalStyle`
     box-sizing: border-box;
   }
   body {
-    font-family: sans-serif;
+    font-family: 'Poppins', sans-serif;;
   }
   /* NextJS */
   html {
