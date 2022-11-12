@@ -18,7 +18,7 @@ Evento exclusivo e gratuito, promovido pela Alura para Front-end utilizando Reac
 <br>
 
 <p align="center">
-  <img alt="aluratube" src=".github/preview.jpg" width="100%">
+  <img alt="aluratube" src=".github/preview.png" width="100%">
 </p>
 
 ## 🚀 Tecnologias
