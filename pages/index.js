@@ -3,13 +3,32 @@ import config from "../config.json";
 import styled from "styled-components";
 import Menu from "../src/components/Menu";
 import { StyledTimeline } from "../src/components/Timeline";
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
-</style>
+import { createClient } from "@supabase/supabase-js";
+
+
+const PROJECT_URL = "https://vqxegtyyoklzqnvwmxuo.supabase.co";
+const PROJECT_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZxeGVndHl5b2tsenFudndteHVvIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjgyODk4NzAsImV4cCI6MTk4Mzg2NTg3MH0.6UQ1N9abxDUdFpjAPuiH0Y5Jd2gIVmkH9WF8WGU4lAc";
+const supabase = createClient(PROJECT_URL, PROJECT_KEY);
+
+
 
 function HomePage() {
 
     const [valorDoFiltro, setValorDoFiltro] = React.useState("");
+    const [playlists, setPlaylists] = React.useState("");
+
+    React.useEffect(() => {
+        supabase.from("video").select("*").then((dados) => {
+            const novasPlaylists = {...playlists};
+            dados.data.forEach((video) => {
+                if(!novasPlaylists[video.playlists]){
+                    novasPlaylists[video.playlists] = [];
+                }
+                novasPlaylists[video.playlists].push(video);
+            })
+            setPlaylists(novasPlaylists);
+        })
+    }, [])
 
     return (
         <>
@@ -19,7 +38,7 @@ function HomePage() {
                 {/*Prop Drilling */}
                 <Menu valorDoFiltro={valorDoFiltro} setValorDoFiltro={setValorDoFiltro}></Menu>
                 <Header></Header>
-                <Timeline searchValue={valorDoFiltro} playlists={config.playlists}></Timeline>
+                <Timeline searchValue={valorDoFiltro} playlists={playlists}></Timeline>
             </div>
         </>
 
@@ -30,7 +49,7 @@ export default HomePage
 
 
 const StyledHeader = styled.div`
-    background-color: ${({theme}) => theme.backgroundLevel1};
+    background-color: ${({ theme }) => theme.backgroundLevel1};
 
     img {
         width: 80px;
